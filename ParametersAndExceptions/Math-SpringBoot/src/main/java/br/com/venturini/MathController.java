@@ -19,12 +19,25 @@ public class MathController {
 	public Double sum(
 			@PathVariable(value = "numberOne") String numberOne,
 			@PathVariable(value = "numberTwo") String numberTwo
-			) throws Exception{
+			) throws Exception {
 		
 		if (!isNumeric(numberOne) || !isNumeric(numberTwo)) {
 			throw new UnsuportedMathOperationException("Please set a numeric value!");
 			}
 		return convertToDouble(numberOne) + convertToDouble(numberTwo);
+	}
+	
+	@RequestMapping(value = "/subtract/{numberOne}/{numberTwo}", method=RequestMethod.GET)
+	// specifies the route in the url 
+	public Double subtract(
+			@PathVariable(value = "numberOne") String numberOne,
+			@PathVariable(value = "numberTwo") String numberTwo
+			) throws Exception {
+		
+		if (!isNumeric(numberOne) || !isNumeric(numberTwo)) {
+			throw new UnsuportedMathOperationException("Please set a numeric value!");
+			}
+		return convertToDouble(numberOne) - convertToDouble(numberTwo);
 	}
 
 	private Double convertToDouble(String strNumber) {
