@@ -101,6 +101,24 @@ public class MathController {
 		return Math.pow(convertToDouble(numberOne), convertToDouble(numberTwo));
 	}
 	
+	@RequestMapping(value = "/average/{numberOne}/{numberTwo}", method=RequestMethod.GET)
+	// specifies the route in the url
+	public Double average(
+			@PathVariable(value = "numberOne") String numberOne,
+			@PathVariable(value = "numberTwo") String numberTwo
+			) throws Exception {
+		
+		if (!isNumeric(numberOne) || !isNumeric(numberTwo)) {
+			// para quando enviar valores nao-numericos
+			throw new UnsuportedMathOperationException("Please set a numeric value!");
+			}
+		else if (numberOne.equals("0") || numberTwo.equals("0")) {
+			// caso um dos valores seja zero, retorna apenas a soma
+			return convertToDouble(numberOne) + convertToDouble(numberTwo);
+		}
+		return (convertToDouble(numberOne) + convertToDouble(numberTwo)) / 2;
+	}
+	
 	private Double convertToDouble(String strNumber) {
 		// se valor for nulo
 		if (strNumber == null) return 0D;
