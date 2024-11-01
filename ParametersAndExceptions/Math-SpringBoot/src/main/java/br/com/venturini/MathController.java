@@ -39,6 +39,24 @@ public class MathController {
 			}
 		return convertToDouble(numberOne) - convertToDouble(numberTwo);
 	}
+	
+	@RequestMapping(value = "/divide/{numberOne}/{numberTwo}", method=RequestMethod.GET)
+	// specifies the route in the url 
+	public Double divide(
+			@PathVariable(value = "numberOne") String numberOne,
+			@PathVariable(value = "numberTwo") String numberTwo
+			) throws Exception {
+		
+		if (!isNumeric(numberOne) || !isNumeric(numberTwo)) {
+			// para quando enviar valores nao-numericos
+			throw new UnsuportedMathOperationException("Please set a numeric value!");
+			}
+		if (numberOne.equals("0") || numberTwo.equals("0")) {
+			// para divisoes com zero
+			throw new UnsuportedMathOperationException("Can not divide by zero!");
+		}
+		return convertToDouble(numberOne) / convertToDouble(numberTwo);
+	}
 
 	private Double convertToDouble(String strNumber) {
 		// se valor for nulo
