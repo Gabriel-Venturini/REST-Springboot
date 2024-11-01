@@ -57,6 +57,20 @@ public class MathController {
 		}
 		return convertToDouble(numberOne) / convertToDouble(numberTwo);
 	}
+	
+	@RequestMapping(value = "/multiply/{numberOne}/{numberTwo}", method=RequestMethod.GET)
+	// specifies the route in the url
+	public Double multiply(
+			@PathVariable(value = "numberOne") String numberOne,
+			@PathVariable(value = "numberTwo") String numberTwo
+			) throws Exception {
+		
+		if (!isNumeric(numberOne) || !isNumeric(numberTwo)) {
+			// para quando enviar valores nao-numericos
+			throw new UnsuportedMathOperationException("Please set a numeric value!");
+			}
+		return convertToDouble(numberOne) * convertToDouble(numberTwo);
+	}
 
 	private Double convertToDouble(String strNumber) {
 		// se valor for nulo
