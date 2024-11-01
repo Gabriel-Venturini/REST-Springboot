@@ -119,6 +119,22 @@ public class MathController {
 		return (convertToDouble(numberOne) + convertToDouble(numberTwo)) / 2;
 	}
 	
+	@RequestMapping(value = "/squareroot/{number}", method=RequestMethod.GET)
+	// url
+	public Double squareroot(
+			@PathVariable(value = "number") String number
+			) throws Exception {
+		
+		if (!isNumeric(number)) {
+			// para quando enviar valores nao-numericos
+			throw new UnsuportedMathOperationException("Please set a numeric value!");
+			}
+		else if (isNegative(number)) {
+			throw new UnsuportedMathOperationException("There is no square root for a negative number!");
+		}
+		return Math.sqrt(convertToDouble(number));
+	}
+	
 	private Double convertToDouble(String strNumber) {
 		// se valor for nulo
 		if (strNumber == null) return 0D;
