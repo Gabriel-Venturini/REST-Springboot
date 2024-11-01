@@ -1,5 +1,7 @@
 package br.com.venturini;
 
+import java.math.BigDecimal;
+
 // import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,7 +53,7 @@ public class MathController {
 			// para quando enviar valores nao-numericos
 			throw new UnsuportedMathOperationException("Please set a numeric value!");
 			}
-		if (numberOne.equals("0") || numberTwo.equals("0")) {
+		else if (numberOne.equals("0") || numberTwo.equals("0")) {
 			// para divisoes com zero
 			throw new UnsuportedMathOperationException("Can not divide by zero!");
 		}
@@ -71,7 +73,34 @@ public class MathController {
 			}
 		return convertToDouble(numberOne) * convertToDouble(numberTwo);
 	}
-
+	
+	@RequestMapping(value = "/powerOf/{numberOne}/{numberTwo}", method=RequestMethod.GET)
+	// specifies the route in the url
+	public Double powerOf(
+			@PathVariable(value = "numberOne") String numberOne,
+			@PathVariable(value = "numberTwo") String numberTwo
+			) throws Exception {
+		
+		if (!isNumeric(numberOne) || !isNumeric(numberTwo)) {
+			// para quando enviar valores nao-numericos
+			throw new UnsuportedMathOperationException("Please set a numeric value!");
+			}
+		else if (isNegative(numberTwo)) {
+			// caso a potencia seja negativa
+			throw new UnsuportedMathOperationException("Potency can not be a negative value!");
+		}
+		else if (numberOne.equals("0")) {
+			// caso o expoente seja zero
+			// zero elevado a qualquer valor positivo da zero
+			return 0D;
+		}
+		else if (numberTwo.equals("0")) {
+			// caso a potencia tem valor zero o resultado e 1
+			return 1D;
+		}
+		return Math.pow(convertToDouble(numberOne), convertToDouble(numberTwo));
+	}
+	
 	private Double convertToDouble(String strNumber) {
 		// se valor for nulo
 		if (strNumber == null) return 0D;
@@ -85,7 +114,20 @@ public class MathController {
 		// retorna nulo caso nao de certo
 		return 0D;
 	}
+	
+	private boolean isNegative(String strNumber) {
+	    if (strNumber == null) return false;				
+	    String number = strNumber.replaceAll(",", ".");
 
+	    try {
+	        BigDecimal bigDecimalNumber = new BigDecimal(number);
+	        return bigDecimalNumber.compareTo(BigDecimal.ZERO) < 0;
+	    } catch (NumberFormatException e) {
+	        // caso a conversao para bigdecimal falhe (número invalido)
+	        return false;
+	    }
+	}
+	
 	private boolean isNumeric(String strNumber) {
 		if (strNumber == null) return false;				
 		String number = strNumber.replaceAll(",", ".");
