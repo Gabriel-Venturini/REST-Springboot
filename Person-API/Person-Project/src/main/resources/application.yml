@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: Person-Project
+
+server:
+  port: 8081
