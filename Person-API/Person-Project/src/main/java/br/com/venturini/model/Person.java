@@ -3,14 +3,34 @@ package br.com.venturini.model;
 import java.io.Serializable;
 import java.util.Objects;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity // torna essa classe uma entidade do banco de dados
+@Table(name="person") // referencia a tabela
 public class Person implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY) // incrementa +1 no id
 	private Long id;
+	
+	@Column(name="first_name", nullable=false, length=80) // referencia a column da tabela
 	private String firstName;
+	
+	@Column(name="last_name", nullable=false, length=80)
 	private String lastName;
+	
+	@Column(nullable=false, length=100)
+	// se o nome do objeto java e da column for igual, nao precisa especificar aqui
 	private String address;
+	
+	@Column(nullable=false, length=1) // F ou M
 	private String gender;
 	
 	public Person() {}
